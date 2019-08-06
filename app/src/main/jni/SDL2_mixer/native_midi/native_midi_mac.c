@@ -83,7 +83,7 @@ static char         gErrorBuffer[ERROR_BUF_SIZE] = "";
 
 
 /* Check whether QuickTime is available */
-int native_midi_detect()
+int native_midi_detect(void)
 {
     /* TODO */
     return 1;
@@ -242,7 +242,15 @@ done:
     SDL_PauseAudio(0);
 }
 
-void native_midi_stop()
+void native_midi_pause(void)
+{
+}
+
+void native_midi_resume(void)
+{
+}
+
+void native_midi_stop(void)
 {
     if (gTunePlayer == NULL)
         return;
@@ -254,7 +262,7 @@ void native_midi_stop()
     TuneUnroll(gTunePlayer);
 }
 
-int native_midi_active()
+int native_midi_active(void)
 {
     if (gTunePlayer != NULL)
     {

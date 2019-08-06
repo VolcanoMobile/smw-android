@@ -1,5 +1,7 @@
 package net.volcanomobile.smw;
 
+import android.content.Context;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,16 +13,39 @@ import com.andretietz.android.controller.ActionView;
 import com.andretietz.android.controller.InputView;
 
 import org.libsdl.app.SDLActivity;
+import org.libsdl.app.SDLControllerManager;
 
 public class MainActivity extends SDLActivity implements InputView.InputEventListener {
 
+    private InputManager mInputManager;
+    private InputManager.InputDeviceListener mInputDeviceListener = new InputManager.InputDeviceListener() {
+        @Override
+        public void onInputDeviceAdded(int deviceId) {
+            updateJoysticks();
+        }
+
+        @Override
+        public void onInputDeviceRemoved(int deviceId) {
+            updateJoysticks();
+        }
+
+        @Override
+        public void onInputDeviceChanged(int deviceId) {
+            updateJoysticks();
+        }
+    };
+
     public static native int updateJoysticks();
+
     private View controllerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        mInputManager = (InputManager) getBaseContext().getSystemService(Context.INPUT_SERVICE);
+        mInputManager.registerInputDeviceListener(mInputDeviceListener, null);
 
         getLayoutInflater().inflate(R.layout.controller, mLayout, true);
         controllerView = mLayout.findViewById(R.id.controller);
@@ -37,7 +62,15 @@ public class MainActivity extends SDLActivity implements InputView.InputEventLis
             Toast.makeText(this, "Tap the top half of the screen to display the on-screen controller.", Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mInputManager.unregisterInputDeviceListener(mInputDeviceListener);
+    }
+
     long lastTouch = -1;
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if(System.currentTimeMillis() <= lastTouch + 500)
@@ -64,12 +97,12 @@ public class MainActivity extends SDLActivity implements InputView.InputEventLis
             keyCode = KeyEvent.KEYCODE_BUTTON_START;
         if(keyCode == KeyEvent.KEYCODE_BACK)
             keyCode = KeyEvent.KEYCODE_BUTTON_SELECT;
-        if (SDLActivity.isDeviceSDLJoystick(event.getDeviceId())) {
+        if (SDLControllerManager.isDeviceSDLJoystick(event.getDeviceId())) {
             // Note that we process events with specific key codes here
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                SDLActivity.onNativePadDown(event.getDeviceId(), keyCode);
+                SDLControllerManager.onNativePadDown(event.getDeviceId(), keyCode);
             } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                SDLActivity.onNativePadUp(event.getDeviceId(), keyCode);
+                SDLControllerManager.onNativePadUp(event.getDeviceId(), keyCode);
             }
         }
         return super.dispatchKeyEvent(event);
@@ -130,9 +163,9 @@ public class MainActivity extends SDLActivity implements InputView.InputEventLis
         if(pressed != prevState) {
             keyDown[key] = pressed;
             if(pressed) {
-                onNativePadDown(-2, smwControls[key]);
+                SDLControllerManager.onNativePadDown(-2, smwControls[key]);
             } else {
-                onNativePadUp(-2, smwControls[key]);
+                SDLControllerManager.onNativePadUp(-2, smwControls[key]);
             }
         }
     }

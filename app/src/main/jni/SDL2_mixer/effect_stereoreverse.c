@@ -1,6 +1,6 @@
 /*
   SDL_mixer:  An audio mixer library based on the SDL library
-  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -55,22 +55,22 @@
  * Stereo reversal effect...this one's pretty straightforward...
  */
 
-static void _Eff_reversestereo32(int chan, void *stream, int len, void *udata)
+static void SDLCALL _Eff_reversestereo32(int chan, void *stream, int len, void *udata)
 {
     /* 16 bits * 2 channels. */
     Uint32 *ptr = (Uint32 *) stream;
-	Uint32 tmp;
+    Uint32 tmp;
     int i;
 
     for (i = 0; i < len; i += 2 * sizeof (Uint32), ptr += 2) {
-		tmp = ptr[0];
-		ptr[0] = ptr[1];
-		ptr[1] = tmp;
+        tmp = ptr[0];
+        ptr[0] = ptr[1];
+        ptr[1] = tmp;
     }
 }
 
 
-static void _Eff_reversestereo16(int chan, void *stream, int len, void *udata)
+static void SDLCALL _Eff_reversestereo16(int chan, void *stream, int len, void *udata)
 {
     /* 16 bits * 2 channels. */
     Uint32 *ptr = (Uint32 *) stream;
@@ -82,7 +82,7 @@ static void _Eff_reversestereo16(int chan, void *stream, int len, void *udata)
 }
 
 
-static void _Eff_reversestereo8(int chan, void *stream, int len, void *udata)
+static void SDLCALL _Eff_reversestereo8(int chan, void *stream, int len, void *udata)
 {
     /* 8 bits * 2 channels. */
     Uint32 *ptr = (Uint32 *) stream;
@@ -111,18 +111,18 @@ int Mix_SetReverseStereo(int channel, int flip)
     Mix_QuerySpec(NULL, &format, &channels);
 
     if (channels == 2) {
-		int bits = (format & 0xFF);
-		switch (format & 0xFF) {
-		case 8:
+        int bits = (format & 0xFF);
+        switch (bits) {
+        case 8:
             f = _Eff_reversestereo8;
-			break;
-		case 16:
+            break;
+        case 16:
             f = _Eff_reversestereo16;
-			break;
-		case 32:
+            break;
+        case 32:
             f = _Eff_reversestereo32;
-			break;
-		default:
+            break;
+        default:
             Mix_SetError("Unsupported audio format");
             return(0);
         }
@@ -133,9 +133,9 @@ int Mix_SetReverseStereo(int channel, int flip)
             return(Mix_RegisterEffect(channel, f, NULL, NULL));
         }
     } else {
-		Mix_SetError("Trying to reverse stereo on a non-stereo stream");
-		return(0);
-	}
+        Mix_SetError("Trying to reverse stereo on a non-stereo stream");
+        return(0);
+    }
 
     return(1);
 }
@@ -143,3 +143,4 @@ int Mix_SetReverseStereo(int channel, int flip)
 
 /* end of effect_stereoreverse.c ... */
 
+/* vi: set ts=4 sw=4 expandtab: */

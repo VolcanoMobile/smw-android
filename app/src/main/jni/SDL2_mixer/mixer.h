@@ -1,6 +1,6 @@
 /*
   SDL_mixer:  An audio mixer library based on the SDL library
-  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -20,6 +20,9 @@
 */
 
 /* Locking wrapper functions */
-void Mix_LockAudio();
-void Mix_UnlockAudio();
+extern void Mix_LockAudio(void);
+extern void Mix_UnlockAudio(void);
 
+extern void add_chunk_decoder(const char *decoder);
+
+/* vi: set ts=4 sw=4 expandtab: */
