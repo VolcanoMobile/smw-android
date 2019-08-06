@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">SuperMarioWar</string>
+
+    <string name="vectorpath_start_select_item_usual" translatable="false">M1,15 a 14,9 0 0,1 28,0 a 14,9 0 1,1 -28,0z</string>
+    <string name="vectorpath_start_select_item_pressed" translatable="false">M0,15 a 15,10 0 1,1 30,0 a 15,10 0 1,1 -30,0z</string>
+</resources>
