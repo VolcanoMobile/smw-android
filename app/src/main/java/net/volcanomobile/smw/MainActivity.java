@@ -3,7 +3,6 @@ package net.volcanomobile.smw;
 import android.content.Context;
 import android.hardware.input.InputManager;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import org.libsdl.app.SDLActivity;
 
@@ -36,9 +35,6 @@ public class MainActivity extends SDLActivity {
 
         mInputManager = (InputManager) getBaseContext().getSystemService(Context.INPUT_SERVICE);
         mInputManager.registerInputDeviceListener(mInputDeviceListener, null);
-
-        if(getPackageManager().hasSystemFeature("android.hardware.touchscreen"))
-            Toast.makeText(this, "Tap the top half of the screen to display the on-screen controller.", Toast.LENGTH_LONG).show();
     }
 
     @Override
