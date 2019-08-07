@@ -64,14 +64,14 @@ SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_
 };
 #else
     //left, right, jump, down, turbo, powerup, start, cancel;
-    { { {14+11, 15+11, 1+11, 13+11, 3+11, 4+11, 7+11, 5+11},
+    { { {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
             {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
             {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4},
             {JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_STICK_1_DOWN, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3, JOY_BUTTON_START + 4}
         },
 
         //up, down, left, right, select, cancel, random, fast scroll
-        {   {12+11, 13+11, 14+11, 15+11, 7+11, 5+11, 4+11, 3+11},
+        {   {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
             {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
             {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3},
             {JOY_STICK_1_UP, JOY_STICK_1_DOWN, JOY_STICK_1_LEFT, JOY_STICK_1_RIGHT, JOY_BUTTON_START, JOY_BUTTON_START + 1, JOY_BUTTON_START + 2, JOY_BUTTON_START + 3}
@@ -84,7 +84,7 @@ void CGameValues::init()
 {
     //set standard game values
     playercontrol[0]  = 1;
-    playercontrol[1]  = 2;
+    playercontrol[1]  = 1;
     showfps       = false;
     frameadvance    = false;
     autokill      = false;
@@ -229,10 +229,11 @@ void CGameValues::init()
         }
 
         //Set the players input to the default configuration (will be overwritten by options.bin settings)
-#if defined(_XBOX)
+#ifdef _XBOX
+        inputConfiguration[iPlayer][1].iDevice = iPlayer;
         playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
 #else
-        playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
+        playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][0];
 #endif
     }
 }
@@ -445,7 +446,7 @@ void CGameValues::ReadBinaryConfig() {
         for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
             short iDevice = controls.read_i16();
 
-#if defined(_XBOX)
+#ifdef _XBOX
             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1]; //Always use gamepads as input devices on xbox
 #else
             if (iDevice >= joystickcount)

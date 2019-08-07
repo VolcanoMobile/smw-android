@@ -168,23 +168,23 @@ void SplashScreenState::update()
         switch (loop_event.type) {
 
 #ifndef _XBOX
-        //case SDL_QUIT: {
-        //    game_values.gamestate = GS_QUIT;
-        //    return;
-        //}
+        case SDL_QUIT: {
+            game_values.gamestate = GS_QUIT;
+            return;
+        }
         break;
 #endif
         case SDL_KEYDOWN: {
             switch (loop_event.key.keysym.sym) {
-//            case SDLK_RETURN:
-//                if (loop_event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
-//#ifndef _XBOX
-//                    game_values.fullscreen = !game_values.fullscreen;
-//                    gfx_changefullscreen(game_values.fullscreen);
-//                    blitdest = screen;
-//#endif
-//                }
-//                break;
+            case SDLK_RETURN:
+                if (loop_event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
+#ifndef _XBOX
+                    game_values.fullscreen = !game_values.fullscreen;
+                    gfx_changefullscreen(game_values.fullscreen);
+                    blitdest = screen;
+#endif
+                }
+                break;
 
 #ifndef _XBOX
             case SDLK_F4:

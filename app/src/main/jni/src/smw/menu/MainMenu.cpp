@@ -27,8 +27,8 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
     miMultiplayerButton = new MI_Button(&rm->spr_selectfield, 120, 322, "Multiplayer", 400, 0);
     miMultiplayerButton->SetCode(MENU_CODE_TO_NET_SERVERS_MENU);
 
-    miOptionsButton = new MI_Button(&rm->spr_selectfield, 120, 322, "Options", 200, 0);
-    miControlsButton = new MI_Button(&rm->spr_selectfield, 320, 322, "Controls", 200, 0);
+    miOptionsButton = new MI_Button(&rm->spr_selectfield, 120, 362, "Options", 200, 0);
+    miControlsButton = new MI_Button(&rm->spr_selectfield, 320, 362, "Controls", 200, 0);
 #endif
     miOptionsButton->SetCode(MENU_CODE_TO_OPTIONS_MENU);
     miControlsButton->SetCode(MENU_CODE_TO_CONTROLS_MENU);
@@ -36,17 +36,17 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
 #ifdef __EMSCRIPTEN__
     miExitButton = NULL;
 #else
-    miExitButton = new MI_Button(&rm->spr_selectfield, 120, 362, "Exit", 640 * 0.625f, 0);
+    miExitButton = new MI_Button(&rm->spr_selectfield, 120, 402, "Exit", 640 * 0.625f, 0);
     miExitButton->SetCode(MENU_CODE_EXIT_APPLICATION);
 #endif
 
 #ifndef __EMSCRIPTEN__
     AddControl(miMainStartButton, miExitButton, miPlayerSelect, NULL, miQuickGameButton);
     AddControl(miQuickGameButton, miExitButton, miPlayerSelect, miMainStartButton, NULL);
-    AddControl(miPlayerSelect, miMainStartButton, miOptionsButton, NULL, NULL);
-    //AddControl(miMultiplayerButton, miPlayerSelect, miOptionsButton, NULL, NULL);
-    AddControl(miOptionsButton, miPlayerSelect, miExitButton, miControlsButton, miControlsButton);
-    AddControl(miControlsButton, miPlayerSelect, miExitButton, miOptionsButton, miOptionsButton);
+    AddControl(miPlayerSelect, miMainStartButton, miMultiplayerButton, NULL, NULL);
+    AddControl(miMultiplayerButton, miPlayerSelect, miOptionsButton, NULL, NULL);
+    AddControl(miOptionsButton, miMultiplayerButton, miExitButton, miControlsButton, miControlsButton);
+    AddControl(miControlsButton, miMultiplayerButton, miExitButton, miOptionsButton, miOptionsButton);
     AddControl(miExitButton, miOptionsButton, miMainStartButton, NULL, NULL);
 #else
     AddControl(miMainStartButton, miControlsButton, miPlayerSelect, NULL, miQuickGameButton);

@@ -46,8 +46,7 @@ void gfxSprite::clearSurface()
 void gfxSprite::freeSurface()
 {
     if (m_picture) {
-        if(m_picture->flags != 2)
-            SDL_FreeSurface(m_picture);
+        SDL_FreeSurface(m_picture);
         m_picture = NULL;
     }
 }

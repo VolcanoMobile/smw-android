@@ -58,9 +58,6 @@ class CObject
 		short collisionOffsetX;
 		short collisionOffsetY;
 
-		float fx, fy;
-		float velx, vely;
-
     short GetState() {
         return state;
     }
@@ -82,6 +79,8 @@ class CObject
 		ObjectType objectType;
 
 		short iw, ih;
+		float fx, fy;
+		float velx, vely;
 
 		gfxSprite *spr;
 		short state;

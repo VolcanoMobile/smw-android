@@ -373,7 +373,6 @@ MI_InputControlContainer::MI_InputControlContainer(gfxSprite * spr_button, short
     miDeviceSelectField = new MI_SelectField(spr_button, x + 16, y + 38, "Device", 420, 150);
     miDeviceSelectField->SetItemChangedCode(MENU_CODE_INPUT_DEVICE_CHANGED);
     miDeviceSelectField->Add("Keyboard", -1, "", false, false);
-    miDeviceSelectField->Add("Touch Controls", 0, "", false, false);
 #ifdef _XBOX
     miDeviceSelectField->Disable(true);
 
@@ -384,11 +383,9 @@ MI_InputControlContainer::MI_InputControlContainer(gfxSprite * spr_button, short
     }
 
 #else
-    char szKey[] = "Android Accelerometer";
     for (short iJoystick = 0; iJoystick < joystickcount; iJoystick++) {
     #ifdef USE_SDL2
-        if(strcmp(szKey, SDL_JoystickNameForIndex(iJoystick)) != 0)
-            miDeviceSelectField->Add(SDL_JoystickNameForIndex(iJoystick), iJoystick, "", false, false);
+        miDeviceSelectField->Add(SDL_JoystickNameForIndex(iJoystick), iJoystick, "", false, false);
     #else
         miDeviceSelectField->Add(SDL_JoystickName(iJoystick), iJoystick, "", false, false);
     #endif
@@ -532,12 +529,6 @@ void MI_InputControlContainer::SetVisibleInputFields()
 
 void MI_InputControlContainer::SetPlayer(short playerID)
 {
-    miDeviceSelectField->Clear();
-    char szKey[] = "Android Accelerometer";
-    for (short iJoystick = 0; iJoystick < joystickcount; iJoystick++) {
-        if(strcmp(szKey, SDL_JoystickNameForIndex(iJoystick)) != 0)
-            miDeviceSelectField->Add(SDL_JoystickNameForIndex(iJoystick), iJoystick, "", false, false);
-    }
     //Hide input options that other players are using
     miDeviceSelectField->HideAllItems(false);
 
@@ -576,7 +567,6 @@ void MI_InputControlContainer::SetPlayer(short playerID)
     miText->SetText(szNewTitle);
     mInputMenu->ResetMenu();
 }
-
 
 void MI_InputControlContainer::UpdateDeviceKeys(short lDevice)
 {
