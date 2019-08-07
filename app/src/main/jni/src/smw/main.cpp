@@ -29,6 +29,7 @@
 #include "ResourceManager.h"
 #include "sfx.h"
 #include "TilesetManager.h"
+#include <jni.h>
 
 #include "FPSLimiter.h"
 #include "GSSplashScreen.h"
@@ -200,6 +201,13 @@ void init_joysticks()
         joysticks[i] = SDL_JoystickOpen(i);
 
     SDL_JoystickEventState(SDL_ENABLE);
+}
+
+extern "C" {
+JNIEXPORT void JNICALL
+Java_net_volcanomobile_smw_MainActivity_updateJoysticks(JNIEnv *mEnv, jclass cls) {
+init_joysticks();
+}
 }
 
 void create_gamemodes()

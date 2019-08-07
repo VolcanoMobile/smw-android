@@ -42,9 +42,10 @@ const std::string GetHomeDirectory()
     return result;
 
 #elif ANDROID
-    const char* extstorage = getenv("EXTERNAL_STORAGE");
-    std::string result(extstorage ? extstorage: "/mnt/sdcard");
-    result += "/supermariowar/";
+    //const char* extstorage = getenv("EXTERNAL_STORAGE");
+    //std::string result(extstorage ? extstorage: "/mnt/sdcard");
+    //result += "/supermariowar/";
+    std::string result("/storage/emulated/0/Android/data/net.volcanomobile.smw/files/supermariowar/");
     return result;
 
 #else // catch-all for Linux-based systems

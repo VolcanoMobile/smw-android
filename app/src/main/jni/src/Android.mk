@@ -34,7 +34,7 @@ LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer enet yaml-cpp
 
 LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog -lz
 
-LOCAL_CPPFLAGS += -DUSE_SDL2 -std=c++11 -fexceptions -O3 -fpermissive -ffast-math
+LOCAL_CPPFLAGS += -DUSE_SDL2 -std=c++11 -fexceptions -O3 -fpermissive -ffast-math -Wno-dangling-else
 LOCAL_CFLAGS += -DUSE_SDL2 -O3 -ffast-math
 
 include $(BUILD_SHARED_LIBRARY)
