@@ -404,6 +404,12 @@ int main(int argc, char *argv[])
 
     delete[] joysticks;
 #endif
+#ifdef __ANDROID__
+    for (short i = 0; i < joystickcount; i++)
+        SDL_JoystickClose(joysticks[i]);
+
+    delete[] joysticks;
+#endif
 
     sfx_close();
     gfx_close();

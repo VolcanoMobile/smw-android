@@ -58,7 +58,7 @@ void NetConfigManager::load()
 }
 
 bool NetConfigManager::load_file(YAML::Node& config) {
-    try {
+    /*try {
         config = YAML::LoadFile(GetHomeDirectory() + "servers.yml");
         return true;
     }
@@ -67,7 +67,7 @@ bool NetConfigManager::load_file(YAML::Node& config) {
     }
     catch (std::runtime_error& error) {
         printf("[net][warning] servers.yml: %s", error.what());
-    }
+    }*/
 
     return false;
 }
