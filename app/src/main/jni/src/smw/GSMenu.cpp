@@ -203,7 +203,7 @@ void MenuState::onEnterState()
     fNeedMenuMusicReset = false;
 
     if (game_values.gamemode->winningteam > -1 && game_values.tournamentwinner == -1 &&
-            (((game_values.matchtype == MATCH_TYPE_SINGLE_GAME || game_values.matchtype == MATCH_TYPE_QUICK_GAME || game_values.matchtype == MATCH_TYPE_MINIGAME || game_values.matchtype == MATCH_TYPE_TOURNAMENT || game_values.matchtype == MATCH_TYPE_NET_GAME) && game_values.bonuswheel == 2) || (game_values.matchtype == MATCH_TYPE_TOUR && game_values.tourstops[game_values.tourstopcurrent - 1]->iBonusType))) {
+        (((game_values.matchtype == MATCH_TYPE_SINGLE_GAME || game_values.matchtype == MATCH_TYPE_QUICK_GAME || game_values.matchtype == MATCH_TYPE_MINIGAME || game_values.matchtype == MATCH_TYPE_TOURNAMENT || game_values.matchtype == MATCH_TYPE_NET_GAME) && game_values.bonuswheel == 2) || (game_values.matchtype == MATCH_TYPE_TOUR && game_values.tourstops[game_values.tourstopcurrent - 1]->iBonusType))) {
         mBonusWheelMenu->miBonusWheel->Reset(false);
         mCurrentMenu = mBonusWheelMenu;
     } else if (game_values.matchtype != MATCH_TYPE_SINGLE_GAME && game_values.matchtype != MATCH_TYPE_QUICK_GAME && game_values.matchtype != MATCH_TYPE_MINIGAME && game_values.matchtype != MATCH_TYPE_NET_GAME) {
@@ -264,107 +264,107 @@ void MenuState::onEnterState()
 
             //Set the next controlling team
             switch (game_values.tournamentcontrolstyle) {
-            case 1: { //Winning Team
-                game_values.tournamentcontrolteam = game_values.gamemode->winningteam;
-                break;
-            }
-
-            case 2: { //Losing Team
-                short iNumInPlace = 0;
-                short iInPlace[4];
-                short iLowestPlace = 0;
-                for (short iScore = 0; iScore < score_cnt; iScore++) {
-                    if (score[iScore]->place == iLowestPlace) {
-                        iInPlace[iNumInPlace++] = iScore;
-                    } else if (score[iScore]->place > iLowestPlace) {
-                        iNumInPlace = 1;
-                        iInPlace[0] = iScore;
-                        iLowestPlace = score[iScore]->place;
-                    }
+                case 1: { //Winning Team
+                    game_values.tournamentcontrolteam = game_values.gamemode->winningteam;
+                    break;
                 }
 
-                game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
-                break;
-            }
+                case 2: { //Losing Team
+                    short iNumInPlace = 0;
+                    short iInPlace[4];
+                    short iLowestPlace = 0;
+                    for (short iScore = 0; iScore < score_cnt; iScore++) {
+                        if (score[iScore]->place == iLowestPlace) {
+                            iInPlace[iNumInPlace++] = iScore;
+                        } else if (score[iScore]->place > iLowestPlace) {
+                            iNumInPlace = 1;
+                            iInPlace[0] = iScore;
+                            iLowestPlace = score[iScore]->place;
+                        }
+                    }
 
-            case 3: { //Tournament Ahead Teams
-                short iNumInPlace = 0;
-                short iInPlace[4];
-                short iMostWins = 0;
-                for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
-                    if (game_values.tournament_scores[iTeam].wins == iMostWins) {
+                    game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
+                    break;
+                }
+
+                case 3: { //Tournament Ahead Teams
+                    short iNumInPlace = 0;
+                    short iInPlace[4];
+                    short iMostWins = 0;
+                    for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
+                        if (game_values.tournament_scores[iTeam].wins == iMostWins) {
+                            iInPlace[iNumInPlace++] = iTeam;
+                        } else if (game_values.tournament_scores[iTeam].wins > iMostWins) {
+                            iNumInPlace = 1;
+                            iInPlace[0] = iTeam;
+                            iMostWins = game_values.tournament_scores[iTeam].wins;
+                        }
+                    }
+
+                    game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
+                    break;
+                }
+
+                case 4: { //Tournament Behind Teams
+                    short iNumInPlace = 0;
+                    short iInPlace[4] = {0,0,0,0};
+                    short iLeastWins = 20; //Most possible wins are 10
+
+                    for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
+                        if (game_values.tournament_scores[iTeam].wins == iLeastWins) {
+                            iInPlace[iNumInPlace++] = iTeam;
+                        } else if (game_values.tournament_scores[iTeam].wins < iLeastWins) {
+                            iNumInPlace = 1;
+                            iInPlace[0] = iTeam;
+                            iLeastWins = game_values.tournament_scores[iTeam].wins;
+                        }
+                    }
+
+                    game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
+                    break;
+                }
+
+                case 5: { //Random
+                    game_values.tournamentcontrolteam = RANDOM_INT( score_cnt);
+                    break;
+                }
+
+                case 6: { //Random Losing Team
+                    short iNumInPlace = 0;
+                    short iInPlace[4] = {0, 0, 0, 0};
+                    short iWinner = 0;
+
+                    for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
+                        if (score[iTeam]->place == 0) {
+                            iWinner = iTeam;
+                            break;
+                        }
+                    }
+
+                    for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
+                        if (iTeam == iWinner)
+                            continue;
+
                         iInPlace[iNumInPlace++] = iTeam;
-                    } else if (game_values.tournament_scores[iTeam].wins > iMostWins) {
-                        iNumInPlace = 1;
-                        iInPlace[0] = iTeam;
-                        iMostWins = game_values.tournament_scores[iTeam].wins;
                     }
+
+                    game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
+                    break;
                 }
 
-                game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
-                break;
-            }
+                case 7: { //Round Robin
+                    game_values.tournamentcontrolteam = game_values.tournamentnextcontrol;
 
-            case 4: { //Tournament Behind Teams
-                short iNumInPlace = 0;
-                short iInPlace[4] = {0,0,0,0};
-                short iLeastWins = 20; //Most possible wins are 10
+                    if (++game_values.tournamentnextcontrol >= score_cnt)
+                        game_values.tournamentnextcontrol = 0;
 
-                for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
-                    if (game_values.tournament_scores[iTeam].wins == iLeastWins) {
-                        iInPlace[iNumInPlace++] = iTeam;
-                    } else if (game_values.tournament_scores[iTeam].wins < iLeastWins) {
-                        iNumInPlace = 1;
-                        iInPlace[0] = iTeam;
-                        iLeastWins = game_values.tournament_scores[iTeam].wins;
-                    }
+                    break;
                 }
 
-                game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
-                break;
-            }
-
-            case 5: { //Random
-                game_values.tournamentcontrolteam = RANDOM_INT( score_cnt);
-                break;
-            }
-
-            case 6: { //Random Losing Team
-                short iNumInPlace = 0;
-                short iInPlace[4] = {0, 0, 0, 0};
-                short iWinner = 0;
-
-                for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
-                    if (score[iTeam]->place == 0) {
-                        iWinner = iTeam;
-                        break;
-                    }
+                default: {
+                    game_values.tournamentcontrolteam = -1;
+                    break;
                 }
-
-                for (short iTeam = 0; iTeam < score_cnt; iTeam++) {
-                    if (iTeam == iWinner)
-                        continue;
-
-                    iInPlace[iNumInPlace++] = iTeam;
-                }
-
-                game_values.tournamentcontrolteam = iInPlace[RANDOM_INT(iNumInPlace)];
-                break;
-            }
-
-            case 7: { //Round Robin
-                game_values.tournamentcontrolteam = game_values.tournamentnextcontrol;
-
-                if (++game_values.tournamentnextcontrol >= score_cnt)
-                    game_values.tournamentnextcontrol = 0;
-
-                break;
-            }
-
-            default: {
-                game_values.tournamentcontrolteam = -1;
-                break;
-            }
             }
         }
     }
@@ -425,41 +425,41 @@ void MenuState::update()
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
 #ifndef _XBOX
-        case SDL_QUIT:
-            Exit();
-            return;
-            break;
+            case SDL_QUIT:
+                Exit();
+                return;
+                break;
 #endif
 
-        case SDL_KEYDOWN: {
-            if (event.key.keysym.sym == SDLK_F1) {
-                game_values.showfps = !game_values.showfps;
-            }
+            case SDL_KEYDOWN: {
+                if (event.key.keysym.sym == SDLK_F1) {
+                    game_values.showfps = !game_values.showfps;
+                }
 
 #ifndef _XBOX
 
 #ifdef _DEBUG
-            if (event.key.keysym.sym == SDLK_F2) {
+                if (event.key.keysym.sym == SDLK_F2) {
                 game_values.frameadvance = !game_values.frameadvance;
             }
 #endif
-            if (event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
-                //ALT + F4 = close window
-                if (event.key.keysym.sym == SDLK_F4) {
-                    Exit();
-                    return;
-                } //ALT + Enter = fullscreen/windowed toggle
-                else if (event.key.keysym.sym == SDLK_RETURN) {
-                    game_values.fullscreen = !game_values.fullscreen;
-					gfx_changefullscreen(game_values.fullscreen);
-                    blitdest = screen;
+                if (event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
+                    //ALT + F4 = close window
+                    if (event.key.keysym.sym == SDLK_F4) {
+                        Exit();
+                        return;
+                    } //ALT + Enter = fullscreen/windowed toggle
+                    else if (event.key.keysym.sym == SDLK_RETURN) {
+                        game_values.fullscreen = !game_values.fullscreen;
+                        gfx_changefullscreen(game_values.fullscreen);
+                        blitdest = screen;
 
-                    continue;
+                        continue;
+                    }
                 }
-            }
 #endif
 #ifdef _DEBUG
-            //Pressing insert in debug mode turns on automated testing
+                //Pressing insert in debug mode turns on automated testing
             if (event.key.keysym.sym == SDLK_INSERT) {
                 g_fAutoTest = !g_fAutoTest;
 
@@ -486,12 +486,12 @@ void MenuState::update()
             }
 
 #endif
-            break;
+                break;
 
-        }
+            }
 
-        default:
-            break;
+            default:
+                break;
         }
 
         game_values.playerInput.Update(event, 1);
@@ -533,6 +533,7 @@ void MenuState::update()
     }
 
     //Watch for the konami code to unlock the minigames match type
+    /*
     if (!game_values.minigameunlocked && mCurrentMenu == mMatchSelectionMenu) {
         if (!mCurrentMenu->GetCurrentControl()->IsModifying()) {
             int keymask =
@@ -563,6 +564,7 @@ void MenuState::update()
             }
         }
     }
+    */
 
 #ifdef _DEBUG
     if (g_fAutoTest)
@@ -583,7 +585,7 @@ void MenuState::update()
 
             if (lastSendType == NET_P2G_SYNC_OK
                 && lastRecvType == NET_G2E_GAME_START)
-            code = MENU_CODE_NET_ROOM_GO;
+                code = MENU_CODE_NET_ROOM_GO;
         }
 
         if (MENU_CODE_EXIT_APPLICATION == code) {
@@ -659,7 +661,7 @@ void MenuState::update()
             mCurrentMenu->ResetMenu();
         }
 #ifdef _XBOX
-        else if (MENU_CODE_TO_SCREEN_SETTINGS == code) {
+            else if (MENU_CODE_TO_SCREEN_SETTINGS == code) {
             mCurrentMenu = mScreenSettingsMenu;
             mCurrentMenu->ResetMenu();
         } else if (MENU_CODE_TO_SCREEN_RESIZE == code) {
@@ -677,7 +679,7 @@ void MenuState::update()
         }
 #else
         else if (MENU_CODE_TOGGLE_FULLSCREEN == code) {
-			gfx_changefullscreen(game_values.fullscreen);
+            gfx_changefullscreen(game_values.fullscreen);
             blitdest = screen;
         }
 #endif
@@ -809,17 +811,17 @@ void MenuState::update()
                         //If it is a tournament, then set the controlling team
                         if (MATCH_TYPE_TOURNAMENT == game_values.matchtype)
                             SetControllingTeamForSettingsMenu(game_values.tournamentcontrolteam, true);
-                        } else if (MATCH_TYPE_TOUR == game_values.matchtype) {
-                            mCurrentMenu = mTourStopMenu;
-                            mCurrentMenu->ResetMenu();
-                        } else if (MATCH_TYPE_WORLD == game_values.matchtype) {
-                            game_values.screenfadespeed = 8;
-                            game_values.screenfade = 8;
-                            game_values.gamestate = GS_START_WORLD;
+                    } else if (MATCH_TYPE_TOUR == game_values.matchtype) {
+                        mCurrentMenu = mTourStopMenu;
+                        mCurrentMenu->ResetMenu();
+                    } else if (MATCH_TYPE_WORLD == game_values.matchtype) {
+                        game_values.screenfadespeed = 8;
+                        game_values.screenfade = 8;
+                        game_values.gamestate = GS_START_WORLD;
 
-                            //Play enter world sound
-                            ifsoundonandreadyplay(rm->sfx_enterstage);
-                        }
+                        //Play enter world sound
+                        ifsoundonandreadyplay(rm->sfx_enterstage);
+                    }
 
                     //Setup items on next menu
                     for (short iGameMode = 0; iGameMode < GAMEMODE_LAST; iGameMode++) {
@@ -948,7 +950,7 @@ void MenuState::update()
                         ResetTournamentBackToMainMenu();
                 } else {
                     if ((game_values.matchtype == MATCH_TYPE_TOUR || game_values.matchtype == MATCH_TYPE_TOURNAMENT) && game_values.tournamentwinner == -1 &&
-                            ((game_values.matchtype != MATCH_TYPE_TOUR && game_values.bonuswheel == 2) || (game_values.matchtype == MATCH_TYPE_TOUR && game_values.tourstops[game_values.tourstopcurrent - 1]->iBonusType))) {
+                        ((game_values.matchtype != MATCH_TYPE_TOUR && game_values.bonuswheel == 2) || (game_values.matchtype == MATCH_TYPE_TOUR && game_values.tourstops[game_values.tourstopcurrent - 1]->iBonusType))) {
                         mCurrentMenu = mTournamentScoreboardMenu;
                     } else if (game_values.matchtype == MATCH_TYPE_SINGLE_GAME) {
                         mCurrentMenu = mGameSettingsMenu;
@@ -1131,17 +1133,17 @@ void MenuState::update()
                 // received connect_ok
                 // then sent skin change
                 if (lastSent.packageType == NET_NOTICE_SKIN_CHANGE
-                        && lastRecv.packageType == NET_RESPONSE_CONNECT_OK
-                        && lastSent.timestamp >= lastRecv.timestamp)
+                    && lastRecv.packageType == NET_RESPONSE_CONNECT_OK
+                    && lastSent.timestamp >= lastRecv.timestamp)
                     code = MENU_CODE_TO_NET_LOBBY_MENU;
 
                 else if (lastSent.packageType == NET_REQUEST_JOIN_ROOM
-                        && lastRecv.packageType == NET_RESPONSE_JOIN_OK
-                        && lastSent.timestamp < lastRecv.timestamp) // ensure that the incoming message arrived after the request
+                         && lastRecv.packageType == NET_RESPONSE_JOIN_OK
+                         && lastSent.timestamp < lastRecv.timestamp) // ensure that the incoming message arrived after the request
                     code = MENU_CODE_TO_NET_ROOM_MENU;
 
                 else if (lastSent.packageType == NET_NOTICE_GAMEMODESETTINGS
-                        && lastRecv.packageType == NET_RESPONSE_CREATE_OK)
+                         && lastRecv.packageType == NET_RESPONSE_CREATE_OK)
                     code = MENU_CODE_TO_NET_ROOM_MENU;
 
                 // ide a hibakezelést
@@ -1194,9 +1196,9 @@ void MenuState::update()
                 netplay.client.requestRoomList();
 
                 // Restore layouts
-                    mNetServersMenu->Restore();
-                    mNetLobbyMenu->Restore();
-                    mNetNewRoomMenu->Restore();
+                mNetServersMenu->Restore();
+                mNetLobbyMenu->Restore();
+                mNetNewRoomMenu->Restore();
 
                 mCurrentMenu = mNetLobbyMenu;
                 mCurrentMenu->ResetMenu();
@@ -1333,8 +1335,8 @@ void MenuState::update()
 
                 if (game_values.matchtype == MATCH_TYPE_WORLD) {
                     if (game_values.gamemode->gamemode == game_mode_pipe_minigame ||
-                            game_values.gamemode->gamemode == game_mode_boss_minigame ||
-                            game_values.gamemode->gamemode == game_mode_boxes_minigame) {
+                        game_values.gamemode->gamemode == game_mode_boss_minigame ||
+                        game_values.gamemode->gamemode == game_mode_boxes_minigame) {
                         fMiniGameMapFound = maplist->findexact(game_values.tourstops[game_values.tourstopcurrent]->pszMapFile, true);
 
                         if (fMiniGameMapFound) {
@@ -1432,11 +1434,11 @@ void MenuState::update()
 
     if (fGenerateMapThumbs) {
         rm->menu_dialog.draw(160, 176, 0, 0, 160, 64);
-		rm->menu_dialog.draw(smw->ScreenWidth/2, 176, 352, 0, 160, 64);
+        rm->menu_dialog.draw(smw->ScreenWidth/2, 176, 352, 0, 160, 64);
         rm->menu_dialog.draw(160, 240, 0, 416, 160, 64);
-		rm->menu_dialog.draw(smw->ScreenWidth/2, smw->ScreenHeight/2, 352, 416, 160, 64);
-		rm->menu_font_large.drawCentered(smw->ScreenWidth/2, 215, "Refreshing Map Thumbnails");
-		rm->menu_font_large.drawCentered(smw->ScreenWidth/2, 245, "Please Wait...");
+        rm->menu_dialog.draw(smw->ScreenWidth/2, smw->ScreenHeight/2, 352, 416, 160, 64);
+        rm->menu_font_large.drawCentered(smw->ScreenWidth/2, 215, "Refreshing Map Thumbnails");
+        rm->menu_font_large.drawCentered(smw->ScreenWidth/2, 245, "Please Wait...");
     }
 
 // TODO: FIX
