@@ -14,7 +14,7 @@ extern SkinList *skinlist;
  **************************************/
 
 MI_TeamSelect::MI_TeamSelect(gfxSprite * spr_background_ref, short x, short y) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     spr = spr_background_ref;
     miImage = new MI_Image(spr, ix, iy, 0, 0, 416, 256, 1, 1, 0);
@@ -171,7 +171,7 @@ MenuCodeEnum MI_TeamSelect::SendInput(CPlayerInput * playerInput)
                 }
 
                 if ((!playerKeys->menu_up.fDown && !playerKeys->menu_down.fDown) ||
-                        (playerKeys->menu_up.fDown && playerKeys->menu_down.fDown)) {
+                    (playerKeys->menu_up.fDown && playerKeys->menu_down.fDown)) {
                     iFastScroll[iPlayer] = 0;
                     iFastScrollTimer[iPlayer] = 0;
                 }
@@ -216,7 +216,7 @@ MenuCodeEnum MI_TeamSelect::SendInput(CPlayerInput * playerInput)
             } else {
                 if (DEVICE_KEYBOARD != playerInput->inputControls[iPlayer]->iDevice || iPlayer == 0) {
                     fModifying = false;
-                    return MENU_CODE_UNSELECT_ITEM;
+                    return MENU_CODE_BACK_TO_MATCH_SELECTION_MENU;
                 }
             }
         }
