@@ -169,12 +169,15 @@ void DECLSPEC musicfinished()
         return;
 
     if (game_values.gamestate == GS_GAME && !game_values.gamemode->gameover) {
+        return;
+        /*
         if (game_values.playnextmusic) {
             musiclist->SetNextMusic(g_map->musicCategoryID, maplist->currentShortmapname(), g_map->szBackgroundFile);
             rm->backgroundmusic[0].load(musiclist->GetCurrentMusic()); //In Game Music
         }
 
         rm->backgroundmusic[0].play(game_values.playnextmusic, false);
+        */
     } else {
         if (fResumeMusic) {
             rm->backgroundmusic[3].play(false, false);
@@ -604,7 +607,7 @@ void shakeScreen()
             MovingObjectType type = movingobject->getMovingObjectType();
 
             if ((type == movingobject_goomba || type == movingobject_koopa || type == movingobject_buzzybeetle || type == movingobject_spiny)
-                    && game_values.screenshakekillinair == movingobject->inair) {
+                && game_values.screenshakekillinair == movingobject->inair) {
                 CPlayer * killer = GetPlayerFromGlobalID(game_values.screenshakeplayerid);
 
                 if (killer) {
@@ -1503,10 +1506,10 @@ void LoadMapObjects(bool fPreview)
                 } else if (game_values.gamemode->gamemode == game_mode_health && RANDOM_INT(100) < game_values.gamemodesettings.health.percentextralife) {
                     iItem = HEALTH_POWERUP;
                 } else if ((game_values.gamemode->gamemode == game_mode_timelimit && RANDOM_INT(100) < game_values.gamemodesettings.time.percentextratime) ||
-                          (game_values.gamemode->gamemode == game_mode_star && RANDOM_INT(100) < game_values.gamemodesettings.star.percentextratime)) {
+                           (game_values.gamemode->gamemode == game_mode_star && RANDOM_INT(100) < game_values.gamemodesettings.star.percentextratime)) {
                     iItem = TIME_POWERUP;
                 } else if ((game_values.gamemode->gamemode == game_mode_coins && RANDOM_INT(100) < game_values.gamemodesettings.coins.percentextracoin) ||
-                          (game_values.gamemode->gamemode == game_mode_greed && RANDOM_INT(100) < game_values.gamemodesettings.greed.percentextracoin)) {
+                           (game_values.gamemode->gamemode == game_mode_greed && RANDOM_INT(100) < game_values.gamemodesettings.greed.percentextracoin)) {
                     iItem = COIN_POWERUP;
                 } else if (game_values.gamemode->gamemode == game_mode_jail && (RANDOM_INT(100)) < game_values.gamemodesettings.jail.percentkey) {
                     iItem = JAIL_KEY_POWERUP;
@@ -1710,7 +1713,7 @@ void SetGameModeSettingsFromMenu()
 {
     //If this is a tour stop and the tour has settings in it, use those.  Otherwise use the menu settings.
     if (game_values.tourstops[game_values.tourstopcurrent]->fUseSettings &&
-            (game_values.matchtype == MATCH_TYPE_TOUR || game_values.matchtype == MATCH_TYPE_WORLD))
+        (game_values.matchtype == MATCH_TYPE_TOUR || game_values.matchtype == MATCH_TYPE_WORLD))
         memcpy(&game_values.gamemodesettings, &game_values.tourstops[game_values.tourstopcurrent]->gmsSettings, sizeof(GameModeSettings));
     else
         memcpy(&game_values.gamemodesettings, &game_values.gamemodemenusettings, sizeof(GameModeSettings));
@@ -1987,40 +1990,40 @@ void GameplayState::handleInput()
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
 #ifndef _XBOX
-        case SDL_QUIT: {
-            CleanUp();
-            game_values.gamestate = GS_QUIT;
-            return;
-        }
-        break;
+            case SDL_QUIT: {
+                CleanUp();
+                game_values.gamestate = GS_QUIT;
+                return;
+            }
+                break;
 #endif
-        case SDL_KEYDOWN: {
+            case SDL_KEYDOWN: {
 #ifndef _XBOX
-            if (event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
-                if (event.key.keysym.sym == SDLK_F4) {
-                    CleanUp();
-                    game_values.gamestate = GS_QUIT;
-                    return;
-                } else if (event.key.keysym.sym == SDLK_RETURN) {
-                    game_values.fullscreen = !game_values.fullscreen;
-                    gfx_changefullscreen(game_values.fullscreen);
-                    blitdest = screen;
+                if (event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
+                    if (event.key.keysym.sym == SDLK_F4) {
+                        CleanUp();
+                        game_values.gamestate = GS_QUIT;
+                        return;
+                    } else if (event.key.keysym.sym == SDLK_RETURN) {
+                        game_values.fullscreen = !game_values.fullscreen;
+                        gfx_changefullscreen(game_values.fullscreen);
+                        blitdest = screen;
 
-                    //Continue with input -> don't feed this event to the input
-                    //otherwise it will pause the game when switching to full/windowed screen
-                    continue;
+                        //Continue with input -> don't feed this event to the input
+                        //otherwise it will pause the game when switching to full/windowed screen
+                        continue;
+                    }
                 }
-            }
 #endif
-            if (event.key.keysym.sym == SDLK_F1) {
-                game_values.showfps = !game_values.showfps;
-            } else if (event.key.keysym.sym == SDLK_ESCAPE) {
-                game_values.playerInput.outputControls[0].game_cancel.fPressed = true;
-            } else if (event.key.keysym.sym == SDLK_TAB) {
-                PlayNextMusicTrack();
-            }
+                if (event.key.keysym.sym == SDLK_F1) {
+                    game_values.showfps = !game_values.showfps;
+                } else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    game_values.playerInput.outputControls[0].game_cancel.fPressed = true;
+                } else if (event.key.keysym.sym == SDLK_TAB) {
+                    PlayNextMusicTrack();
+                }
 #ifdef _DEBUG
-            else if (event.key.keysym.sym == SDLK_LEFTBRACKET) {
+                else if (event.key.keysym.sym == SDLK_LEFTBRACKET) {
                 game_values.framelimiter++;
             } else if (event.key.keysym.sym == SDLK_RIGHTBRACKET) {
                 if (game_values.framelimiter > 0)
@@ -2117,11 +2120,11 @@ void GameplayState::handleInput()
                 g_fAutoTest = !g_fAutoTest;
             }
 #endif
-            break;
-        }
+                break;
+            }
 
 #ifdef _XBOX
-        case SDL_JOYBUTTONDOWN: {
+            case SDL_JOYBUTTONDOWN: {
             if (event.jbutton.state == SDL_PRESSED && event.jbutton.button == 5) {
                 PlayNextMusicTrack();
             }
@@ -2130,8 +2133,8 @@ void GameplayState::handleInput()
         }
 #endif
 
-        default:
-            break;
+            default:
+                break;
         }
 
         //Feed the player control structures with input data
@@ -2227,7 +2230,7 @@ void GameplayState::read_network()
                     }
                 }
             }
-            // for remote players, interpolate
+                // for remote players, interpolate
             else {
                 list_players[p]->fx   = percent_old * netplay.previous_playerdata.player[p].x    + percent_new * netplay.latest_playerdata.player[p].x;
                 list_players[p]->fy   = percent_old * netplay.previous_playerdata.player[p].y    + percent_new * netplay.latest_playerdata.player[p].y;
