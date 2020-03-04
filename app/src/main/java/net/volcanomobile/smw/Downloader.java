@@ -63,7 +63,7 @@ public class Downloader extends Activity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
 
-        String url = "https://github.com/mmatyas/supermariowar/raw/master/data.zip";
+        String url = "https://github.com/VolcanoMobile/smw-android/raw/master/data.zip";
         DownloadFileAsync download = new DownloadFileAsync(getExternalFilesDir(null).getAbsolutePath() + "/data.zip", this, new DownloadFileAsync.ProgressUpdate() {
             @Override
             public void downloadProgress(int progress) {

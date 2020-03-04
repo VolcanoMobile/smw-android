@@ -42,7 +42,8 @@
             android:alwaysRetainTaskState="true"
             android:launchMode="singleInstance"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="sensorLandscape"
+            tools:ignore="LockedOrientationActivity" />
 
     </application>
 
