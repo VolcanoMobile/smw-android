@@ -18,9 +18,9 @@
 #include <cstring>
 
 #ifndef __EMSCRIPTEN__
-    inline void smallDelay() { SDL_Delay(10); }
+inline void smallDelay() { SDL_Delay(10); }
 #else
-    inline void smallDelay() {}
+inline void smallDelay() {}
 #endif
 
 extern SDL_Surface* screen;
@@ -53,7 +53,7 @@ extern CGame* smw;
  * MI_PlayerSelect Class
  **************************************/
 MI_PlayerSelect::MI_PlayerSelect(gfxSprite * nspr, short x, short y, const char * name, short width, short indent) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     spr = nspr;
     iSelectedPlayer = 0;
@@ -232,7 +232,7 @@ short iPowerupPositionMap[NUM_POWERUPS] = { 1, 0, 2, 6, 3, 8, 4,20,18, 7, 5,10,1
 */
 
 MI_PowerupSelection::MI_PowerupSelection(short x, short y, short width, short numlines) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     iWidth = width;
     iNumLines = numlines;
@@ -554,7 +554,7 @@ void MI_PowerupSelection::AdjustDisplayArrows()
  **************************************/
 
 MI_WorldPreviewDisplay::MI_WorldPreviewDisplay(short x, short y, short cols, short rows) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     sMapSurface = SDL_CreateRGBSurface(screen->flags, 384, 304, screen->format->BitsPerPixel, 0, 0, 0, 0);
 
@@ -779,7 +779,7 @@ void MI_WorldPreviewDisplay::UpdateMapSurface(bool fFullRefresh)
  **************************************/
 
 MI_AnnouncerField::MI_AnnouncerField(gfxSprite * nspr, short x, short y, const char * name, short width, short indent, SimpleFileList * pList) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     spr = nspr;
 
@@ -883,7 +883,7 @@ void MI_AnnouncerField::Draw()
  **************************************/
 
 MI_PacksField::MI_PacksField(gfxSprite * nspr, short x, short y, const char * name, short width, short indent, SimpleFileList * pList, MenuCodeEnum code) :
-    MI_AnnouncerField(nspr, x, y, name, width, indent, pList)
+        MI_AnnouncerField(nspr, x, y, name, width, indent, pList)
 {
     itemChangedCode = code;
 }
@@ -922,7 +922,7 @@ MenuCodeEnum MI_PacksField::SendInput(CPlayerInput * playerInput)
  **************************************/
 
 MI_PlaylistField::MI_PlaylistField(gfxSprite * nspr, short x, short y, const char * name, short width, short indent) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     spr = nspr;
 
@@ -1033,7 +1033,7 @@ void MI_PlaylistField::Draw()
  **************************************/
 
 MI_StoredPowerupResetButton::MI_StoredPowerupResetButton(gfxSprite * nspr, short x, short y, const char * name, short width, short justified) :
-    MI_Button(nspr, x, y, name, width, justified)
+        MI_Button(nspr, x, y, name, width, justified)
 {
     spr = nspr;
 
@@ -1073,7 +1073,7 @@ void MI_StoredPowerupResetButton::Draw()
 
 //Call with x = 70 and y == 80
 MI_TourStop::MI_TourStop(short x, short y, bool fWorld) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     fIsWorld = fWorld;
 
@@ -1213,6 +1213,7 @@ void MI_TourStop::Refresh(short iTourStop)
             gamemode = pipegamemode;
             tourstopicon = 25;
         } else if (tourstop->iMode == game_mode_boss_minigame) {
+            bossgamemode->SetBossType(tourstop->gmsSettings.boss.bosstype);
             gamemode = bossgamemode;
             tourstopicon = 26;
         } else if (tourstop->iMode == game_mode_boxes_minigame) {
@@ -1290,7 +1291,7 @@ void MI_TourStop::Refresh(short iTourStop)
 
 //Call with x = 70 and y == 80
 MI_TournamentScoreboard::MI_TournamentScoreboard(gfxSprite * spr_background, short x, short y) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     sprBackground = spr_background;
     fCreated = false;
@@ -1464,7 +1465,7 @@ void MI_TournamentScoreboard::Update()
 
                 short iStringWidth = (short)rm->menu_font_large.getWidth(szWinnerText);
                 short iRandX = (short)(RANDOM_INT(smw->ScreenWidth - iStringWidth) + (iStringWidth >> 1));
-				short iRandY = (short)(RANDOM_INT(smw->ScreenHeight - 100) + 100);
+                short iRandY = (short)(RANDOM_INT(smw->ScreenHeight - 100) + 100);
 
                 uiMenu->AddEyeCandy(new EC_GravText(&rm->menu_font_large, iRandX, iRandY, szWinnerText, -VELJUMP));
             }
@@ -1838,7 +1839,7 @@ void MI_TournamentScoreboard::StopSwirl()
  **************************************/
 
 MI_BonusWheel::MI_BonusWheel(short x, short y) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     miPlayerImages = NULL;
     fCpuControlled = false;
@@ -2255,7 +2256,7 @@ void MI_ScreenResize::Draw()
  **************************************/
 
 MI_MapFilterScroll::MI_MapFilterScroll(gfxSprite * nspr, short x, short y, short width, short numlines) :
-    UI_Control(x, y)
+        UI_Control(x, y)
 {
     spr = nspr;
     iWidth = width;
@@ -2434,7 +2435,7 @@ bool MI_MapFilterScroll::MovePrev()
  **************************************/
 
 MI_MapBrowser::MI_MapBrowser() :
-    UI_Control(0, 0)
+        UI_Control(0, 0)
 {
     for (short iSurface = 0; iSurface < 9; iSurface++)
         mapSurfaces[iSurface] = NULL;
@@ -2713,7 +2714,7 @@ void MI_MapBrowser::LoadPage(short page, bool fUseFilters)
  **************************************/
 
 MI_World::MI_World() :
-    UI_Control(0, 0)
+        UI_Control(0, 0)
 {
     iControllingTeam = 0;
     iReturnDirection = 0;
@@ -3332,7 +3333,7 @@ MenuCodeEnum MI_World::SendInput(CPlayerInput * playerInput)
                 if (playerKeys->menu_up.fPressed || playerKeys->menu_up.fDown) {
                     //Make sure there is a path connection and that there is no stage or vehicle blocking the way
                     if ((tile->fConnection[0] || tile->iConnectionType == 14) && !g_worldmap.IsDoor(iPlayerCurrentTileX, iPlayerCurrentTileY - 1) &&
-                            (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 0 || fUsingCloud)) {
+                        (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 0 || fUsingCloud)) {
                         if (fUsingCloud && (tile->iCompleted == -2 || fVehicleInTile) && iReturnDirection != 0)
                             UseCloud(false);
 
@@ -3351,7 +3352,7 @@ MenuCodeEnum MI_World::SendInput(CPlayerInput * playerInput)
                     }
                 } else if (playerKeys->menu_down.fPressed || playerKeys->menu_down.fDown) {
                     if ((tile->fConnection[1] || tile->iConnectionType == 14) && !g_worldmap.IsDoor(iPlayerCurrentTileX, iPlayerCurrentTileY + 1) &&
-                            (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 1 || fUsingCloud)) {
+                        (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 1 || fUsingCloud)) {
                         if (fUsingCloud && (tile->iCompleted == -2 || fVehicleInTile) && iReturnDirection != 1)
                             UseCloud(false);
 
@@ -3370,7 +3371,7 @@ MenuCodeEnum MI_World::SendInput(CPlayerInput * playerInput)
                     }
                 } else if (playerKeys->menu_left.fPressed || playerKeys->menu_left.fDown) {
                     if ((tile->fConnection[2] || tile->iConnectionType == 12) && !g_worldmap.IsDoor(iPlayerCurrentTileX - 1, iPlayerCurrentTileY) &&
-                            (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 2 || fUsingCloud)) {
+                        (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 2 || fUsingCloud)) {
                         if (fUsingCloud && (tile->iCompleted == -2 || fVehicleInTile) && iReturnDirection != 2)
                             UseCloud(false);
 
@@ -3391,7 +3392,7 @@ MenuCodeEnum MI_World::SendInput(CPlayerInput * playerInput)
                     }
                 } else if (playerKeys->menu_right.fPressed || playerKeys->menu_right.fDown) {
                     if ((tile->fConnection[3] || tile->iConnectionType == 12) && !g_worldmap.IsDoor(iPlayerCurrentTileX + 1, iPlayerCurrentTileY) &&
-                            (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 3 || fUsingCloud)) {
+                        (((tile->iCompleted >= -1 || (tile->iType >= 6 && game_values.tourstops[tile->iType - 6]->iStageType == 1)) && (!fVehicleInTile || iSleepTurns > 0)) || iReturnDirection == 3 || fUsingCloud)) {
                         if (fUsingCloud && (tile->iCompleted == -2 || fVehicleInTile) && iReturnDirection != 3)
                             UseCloud(false);
 
@@ -3488,12 +3489,12 @@ MenuCodeEnum MI_World::SendInput(CPlayerInput * playerInput)
             if (playerKeys->menu_cancel.fPressed) {
                 if (DEVICE_KEYBOARD != playerInput->inputControls[iPlayer]->iDevice || iPlayer == 0) {
                     fModifying = false;
-                    return MENU_CODE_UNSELECT_ITEM;
+                    return MENU_CODE_BACK_TEAM_SELECT_MENU;
                 }
             }
 
             if ((game_values.playercontrol[iPlayer] == 1 || fNoInterestingMoves) && (iPopupFlag[iTeamId] || playerKeys->menu_random.fPressed ||
-                    (iPlayer != 0 && playerInput->inputControls[iPlayer]->iDevice == DEVICE_KEYBOARD && playerKeys->menu_cancel.fPressed))) {
+                                                                                     (iPlayer != 0 && playerInput->inputControls[iPlayer]->iDevice == DEVICE_KEYBOARD && playerKeys->menu_cancel.fPressed))) {
                 iPopupFlag[iTeamId] = true;
 
                 if (iPlayerState == 0 && iStateTransition[iTeamId] == 0) {
@@ -3725,7 +3726,7 @@ void MI_World::UseCloud(bool fUseCloud)
  **************************************/
 
 MI_ChatMessageBox::MI_ChatMessageBox(short x, short y, short width, short numlines)
-    : UI_Control(x, y)
+        : UI_Control(x, y)
 {
     iWidth = width;
     iNumLines = numlines;
