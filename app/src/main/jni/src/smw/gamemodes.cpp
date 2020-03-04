@@ -75,13 +75,13 @@ void SetupScoreBoard(bool fOrderMatters)
                 //The boxes minigame doesn't use "score" it uses "subscore[0]" to determine the winner
                 if (game_values.gamemode->gamemode == game_mode_boxes_minigame) {
                     if (max == -1 || score[j]->subscore[0] > score[max]->subscore[0] ||
-                            (score[j]->subscore[0] == score[max]->subscore[0] && score[j]->score > score[max]->score)) { //or it is tied but they died later in the game
+                        (score[j]->subscore[0] == score[max]->subscore[0] && score[j]->score > score[max]->score)) { //or it is tied but they died later in the game
                         max = j;
                     }
                 } else {
                     //If this player's score is bigger
                     if (max == -1 || score[j]->score > score[max]->score ||
-                            (score[j]->score == score[max]->score && score[j]->order > score[max]->order)) { //or it is tied but they died later in the game
+                        (score[j]->score == score[max]->score && score[j]->order > score[max]->order)) { //or it is tied but they died later in the game
                         max = j;
                     }
                 }
@@ -94,7 +94,7 @@ void SetupScoreBoard(bool fOrderMatters)
         if (!fOrderMatters && i > 0) {
             if (game_values.gamemode->gamemode == game_mode_boxes_minigame) {
                 if (score[oldmax]->subscore[0] == score[max]->subscore[0] &&
-                        score[oldmax]->score == score[max]->score)
+                    score[oldmax]->score == score[max]->score)
                     score[max]->place = score[oldmax]->place;
             } else {
                 if (score[oldmax]->score == score[max]->score)
@@ -396,7 +396,7 @@ CPlayer * CGameMode::GetHighestScorePlayer(bool fGetHighest)
     for (i = j + 1; i < list_players_cnt; i++) {
         if (!list_players[i]->isdead()) {
             if ((!fGetHighest && list_players[i]->Score().score < list_players[tiedplayers[0]]->Score().score) ||
-                    (fGetHighest && list_players[i]->Score().score > list_players[tiedplayers[0]]->Score().score)) {
+                (fGetHighest && list_players[i]->Score().score > list_players[tiedplayers[0]]->Score().score)) {
                 count = 1;
                 tiedplayers[0] = i;
             } else if (list_players[i]->Score().score == list_players[tiedplayers[0]]->Score().score) {
@@ -429,8 +429,8 @@ short CGameMode::GetScoreRankedPlayerList(CPlayer * players[4], bool fGetHighest
         short iRandom = 0;
         for (short iIndex = 0; iIndex < iNumPlayersInList - 1; iIndex++) {
             if ((fGetHighest && players[iIndex]->Score().score < players[iIndex + 1]->Score().score) ||
-                    (!fGetHighest && players[iIndex]->Score().score > players[iIndex + 1]->Score().score) ||
-                    (players[iIndex]->Score().score == players[iIndex + 1]->Score().score && RANDOM_BOOL() && iRandom++ < 5)) {
+                (!fGetHighest && players[iIndex]->Score().score > players[iIndex + 1]->Score().score) ||
+                (players[iIndex]->Score().score == players[iIndex + 1]->Score().score && RANDOM_BOOL() && iRandom++ < 5)) {
                 CPlayer * pTemp = players[iIndex];
                 players[iIndex] = players[iIndex + 1];
                 players[iIndex + 1] = pTemp;
@@ -1521,7 +1521,7 @@ void CGM_Survival::think()
                 iWeightCount += game_values.gamemodesettings.survival.enemyweight[++iSelectedEnemy];
 
 #pragma warning("Replace all these magic constants with proportional values")
-			if (0 == iSelectedEnemy) {
+            if (0 == iSelectedEnemy) {
                 objectcontainer[2].add(new OMO_Thwomp(&rm->spr_thwomp, (short)RANDOM_INT(smw->ScreenWidth * 0.92f), (float)game_values.gamemodesettings.survival.speed / 2.0f + (float)(RANDOM_INT(20))/10.0f));
                 timer = (short)(RANDOM_INT(21) - 10 + rate);
             } else if (1 == iSelectedEnemy) {
@@ -1535,7 +1535,7 @@ void CGM_Survival::think()
                 if (dVel < 0)
                     x = 694;
 
-				objectcontainer[2].add(new OMO_BowserFire(&rm->spr_bowserfire, x, (short)RANDOM_INT( smw->ScreenHeight * 0.93f ), dVel, 0.0f, -1, -1, -1));
+                objectcontainer[2].add(new OMO_BowserFire(&rm->spr_bowserfire, x, (short)RANDOM_INT( smw->ScreenHeight * 0.93f ), dVel, 0.0f, -1, -1, -1));
                 timer = (short)(RANDOM_INT(21) - 10 + rate);
             }
         }
@@ -1808,7 +1808,7 @@ short CGM_Jail::playerkilledplayer(CPlayer &inflictor, CPlayer &other, killstyle
                         score[iTeamPoint]->AdjustScore(1);
                 }
             }
-            //Apply rules for "Owned" jail
+                //Apply rules for "Owned" jail
             else if (game_values.gamemodesettings.jail.style == 1) {
                 short jailedteams[4] = {-1, -1, -1, -1};
 
@@ -2968,7 +2968,7 @@ void CGM_Chase::init()
     //Add phantos based on settings
     for (short iPhanto = 0; iPhanto < 3; iPhanto++) {
         for (short iNumPhantos = 0; iNumPhantos < game_values.gamemodesettings.chase.phantoquantity[iPhanto]; iNumPhantos++)
-			objectcontainer[1].add(new OMO_Phanto(&rm->spr_phanto, RANDOM_INT(smw->ScreenWidth), RANDOM_BOOL() ? -32 - CRUNCHMAX : smw->ScreenHeight, 0.0f, 0.0f, iPhanto));
+            objectcontainer[1].add(new OMO_Phanto(&rm->spr_phanto, RANDOM_INT(smw->ScreenWidth), RANDOM_BOOL() ? -32 - CRUNCHMAX : smw->ScreenHeight, 0.0f, 0.0f, iPhanto));
     }
 
     //Add a key
@@ -3199,6 +3199,7 @@ bool CGM_Boss_MiniGame::SetWinner(CPlayer * player)
     }
 
     SetupScoreBoard(false);
+    ShowScoreBoard();
 
     if (game_values.music) {
         ifsoundonstop(rm->sfx_invinciblemusic);
