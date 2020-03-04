@@ -13,7 +13,7 @@ extern WorldList *worldlist;
 
 UI_MatchSelectionMenu::UI_MatchSelectionMenu() : UI_Menu()
 {
-	miMatchSelectionStartButton = new MI_Button(&rm->spr_selectfield, 270, 420, "Start", 100, 0);
+    miMatchSelectionStartButton = new MI_Button(&rm->spr_selectfield, 270, 420, "Start", 100, 0);
     miMatchSelectionStartButton->SetCode(MENU_CODE_MATCH_SELECTION_START);
 
     miMatchSelectionField = new MI_SelectField(&rm->spr_selectfield, 130, 340, "Match", 380, 100);
@@ -21,7 +21,7 @@ UI_MatchSelectionMenu::UI_MatchSelectionMenu() : UI_Menu()
     miMatchSelectionField->Add("Tournament", MATCH_TYPE_TOURNAMENT, "", false, false);
     miMatchSelectionField->Add("Tour", MATCH_TYPE_TOUR, "", false, false);
     miMatchSelectionField->Add("World", MATCH_TYPE_WORLD, "", false, false);
-    miMatchSelectionField->Add("Minigame", MATCH_TYPE_MINIGAME, "", false, !game_values.minigameunlocked);
+    miMatchSelectionField->Add("Minigame", MATCH_TYPE_MINIGAME, "", false, false);
     miMatchSelectionField->SetData(&game_values.matchtype, NULL, NULL);
     miMatchSelectionField->SetKey(game_values.matchtype);
     miMatchSelectionField->SetItemChangedCode(MENU_CODE_MATCH_SELECTION_MATCH_CHANGED);
@@ -138,7 +138,7 @@ void UI_MatchSelectionMenu::ActivateMinigameField()
 
 short UI_MatchSelectionMenu::GetMinigameID()
 {
-     return miMinigameField->GetShortValue();
+    return miMinigameField->GetShortValue();
 }
 
 short UI_MatchSelectionMenu::GetSelectedMatchType()
