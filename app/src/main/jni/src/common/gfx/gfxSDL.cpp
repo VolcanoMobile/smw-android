@@ -146,7 +146,7 @@ void GraphicsSDL::create_game_window(bool fullscreen)
         }
 
         SDL_SetRenderDrawColor(sdl2_renderer, 0, 0, 0, 255);
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
         //SDL_RenderSetLogicalSize(sdl2_renderer, GFX_SCREEN_W, GFX_SCREEN_H);
     }
 

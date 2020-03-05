@@ -125,6 +125,10 @@ extern CResourceManager* rm;
 void gameloop_frame();
 #endif
 
+#ifdef __ANDROID__
+void init_joysticks();
+#endif
+
 void gameloop()
 {
     SplashScreenState::instance().init();
@@ -140,6 +144,10 @@ void gameloop_frame()
 #endif
     {
         FPSLimiter::instance().frameStart();
+
+#ifdef __ANDROID__
+        init_joysticks();
+#endif
 
         GameStateManager::instance().currentState->update();
 
@@ -193,6 +201,9 @@ void create_globals()
 
 void init_joysticks()
 {
+    if (joystickcount == SDL_NumJoysticks())
+        return;
+
     if (joystickcount != 0) {
         for (short i = 0; i < joystickcount; i++)
             SDL_JoystickClose(joysticks[i]);
@@ -207,13 +218,6 @@ void init_joysticks()
         joysticks[i] = SDL_JoystickOpen(i);
 
     SDL_JoystickEventState(SDL_ENABLE);
-}
-
-extern "C" {
-JNIEXPORT void JNICALL
-Java_net_volcanomobile_smw_MainActivity_updateJoysticks(JNIEnv *mEnv, jclass cls) {
-init_joysticks();
-}
 }
 
 void create_gamemodes()
