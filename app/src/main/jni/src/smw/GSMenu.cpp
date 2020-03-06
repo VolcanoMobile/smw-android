@@ -68,12 +68,10 @@
 
 bool LoadStartGraphics();
 
-/*
-#ifdef _XBOX
+#if defined(_XBOX) || defined(__ANDROID__)
 extern void reconnectjoysticks();
-extern int joystickcount;
+extern short joystickcount;
 #endif
-*/
 
 extern SDL_Surface* screen;
 extern SDL_Surface* blitdest;
@@ -407,12 +405,10 @@ void MenuState::onEnterState()
 
 void MenuState::update()
 {
-    /*
-    #ifdef _XBOX
+    #if defined(_XBOX) || defined(__ANDROID__)
         if (joystickcount != SDL_NumJoysticks())
         reconnectjoysticks();
     #endif
-    */
 
     if (netplay.active)
         netplay.client.update();

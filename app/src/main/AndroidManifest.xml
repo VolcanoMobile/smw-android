@@ -8,7 +8,7 @@
         android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen"
         android:required="false" />
-    <uses-feature android:name="android.hardware.gamepad" android:required="false"/>
+    <uses-feature android:name="android.hardware.gamepad" android:required="true"/>
 
     <!-- Allow writing to external storage -->
     <uses-permission android:name="android.permission.VIBRATE" />

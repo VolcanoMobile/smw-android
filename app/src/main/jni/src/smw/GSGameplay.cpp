@@ -50,6 +50,11 @@ extern CResourceManager* rm;
 extern short x_shake;
 extern short y_shake;
 
+#if defined(_XBOX) || defined(__ANDROID__)
+extern void reconnectjoysticks();
+extern short joystickcount;
+#endif
+
 CObjectContainer noncolcontainer;
 CObjectContainer objectcontainer[3];
 
@@ -2421,12 +2426,10 @@ void GameplayState::update()
         iScoreTextOffset[iTeam] = 34 * game_values.teamcounts[iTeam] + 1;
     }
 
-    /*
-    #ifdef _XBOX
+    #if defined(_XBOX) || defined(__ANDROID__)
             if (joystickcount != SDL_NumJoysticks())
                 reconnectjoysticks();
     #endif
-    */
 #ifdef _DEBUG
     debug_gameplay();
 #endif

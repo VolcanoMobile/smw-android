@@ -125,10 +125,6 @@ extern CResourceManager* rm;
 void gameloop_frame();
 #endif
 
-#ifdef __ANDROID__
-void init_joysticks();
-#endif
-
 void gameloop()
 {
     SplashScreenState::instance().init();
@@ -144,10 +140,6 @@ void gameloop_frame()
 #endif
     {
         FPSLimiter::instance().frameStart();
-
-#ifdef __ANDROID__
-        init_joysticks();
-#endif
 
         GameStateManager::instance().currentState->update();
 
@@ -201,15 +193,6 @@ void create_globals()
 
 void init_joysticks()
 {
-    if (joystickcount == SDL_NumJoysticks())
-        return;
-
-    if (joystickcount != 0) {
-        for (short i = 0; i < joystickcount; i++)
-            SDL_JoystickClose(joysticks[i]);
-        free(joysticks);
-    }
-
     SDL_InitSubSystem(SDL_INIT_JOYSTICK);
     joystickcount = (short)SDL_NumJoysticks();
     joysticks = new SDL_Joystick*[joystickcount];
@@ -403,13 +386,7 @@ int main(int argc, char *argv[])
     for (short i = 0; i < GAMEMODE_LAST; i++)
         delete gamemodes[i];
 
-#ifdef _XBOX
-    for (i = 0; i < joystickcount; i++)
-        SDL_JoystickClose(joysticks[i]);
-
-    delete[] joysticks;
-#endif
-#ifdef __ANDROID__
+#if defined(_XBOX) || defined(__ANDROID__)
     for (short i = 0; i < joystickcount; i++)
         SDL_JoystickClose(joysticks[i]);
 
@@ -454,8 +431,7 @@ int main(int argc, char *argv[])
 }
 
 
-/*
-#ifdef _XBOX
+#if defined(_XBOX) || defined(__ANDROID__)
 
 void reconnectjoysticks()
 {
@@ -470,11 +446,10 @@ void reconnectjoysticks()
     joystickcount = SDL_NumJoysticks();
     joysticks = new SDL_Joystick*[joystickcount];
 
-    for (i = 0; i < joystickcount; i++)
+    for (short i = 0; i < joystickcount; i++)
         joysticks[i] = SDL_JoystickOpen(i);
 
     SDL_JoystickEventState(SDL_ENABLE);
 }
 
 #endif
-*/

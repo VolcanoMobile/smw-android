@@ -236,7 +236,7 @@ void CGameValues::init()
         }
 
         //Set the players input to the default configuration (will be overwritten by options.bin settings)
-#ifdef _XBOX
+#if defined(_XBOX) || defined(__ANDROID__)
         inputConfiguration[iPlayer][1].iDevice = iPlayer;
         playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
 #else
@@ -453,7 +453,7 @@ void CGameValues::ReadBinaryConfig() {
         for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
             short iDevice = controls.read_i16();
 
-#ifdef _XBOX
+#if defined(_XBOX) || defined(__ANDROID__)
             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1]; //Always use gamepads as input devices on xbox
 #else
             if (iDevice >= joystickcount)

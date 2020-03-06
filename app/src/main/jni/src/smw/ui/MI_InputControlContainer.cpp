@@ -373,7 +373,7 @@ MI_InputControlContainer::MI_InputControlContainer(gfxSprite * spr_button, short
     miDeviceSelectField = new MI_SelectField(spr_button, x + 16, y + 38, "Device", 420, 150);
     miDeviceSelectField->SetItemChangedCode(MENU_CODE_INPUT_DEVICE_CHANGED);
     miDeviceSelectField->Add("Keyboard", -1, "", false, false);
-#ifdef _XBOX
+#if defined(_XBOX) || defined(__ANDROID__)
     miDeviceSelectField->Disable(true);
 
     for (int iJoystick = 0; iJoystick < 4; iJoystick++) {
