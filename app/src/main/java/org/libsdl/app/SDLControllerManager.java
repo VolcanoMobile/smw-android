@@ -115,8 +115,7 @@ public class SDLControllerManager
         }
         **/
 
-        return ((sources & InputDevice.SOURCE_CLASS_JOYSTICK) != 0 ||
-                ((sources & InputDevice.SOURCE_DPAD) == InputDevice.SOURCE_DPAD) ||
+        return ((sources & InputDevice.SOURCE_CLASS_JOYSTICK) != 0 &&
                 ((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
         );
     }
